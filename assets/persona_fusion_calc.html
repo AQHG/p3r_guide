@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P3R人格面具(Persona)合成查询工具</title>
+    <style>
+        :root {
+            --p-blue: #0044cc;
+            --p-blue-light: #1f5fe0;
+            /* 【新增】表头高亮色：比原蓝稍浅 */
+            --p-hover: #e6f0ff;
+            --p-cell-highlight: #e7f1ff;
+            /* 单元格淡蓝高亮 */
+            --p-highlight-strong: #ffd700;
+            --p-highlight-normal: #fde457;
+            --p-highlight-weak: #fffbe6;
+            --p-border: #ccc;
+        }
+
+        /* 修改：添加 html 选择器，强制占满高度并禁止外层滚动 */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            background-color: #f4f6f9;
+            padding: 15px;
+            /* 稍微减小 padding 节省空间 */
+            box-sizing: border-box;
+            /* 关键：让 padding 算在 height 100% 内 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--p-blue);
+            margin-bottom: 10px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+            /* === 关键布局修改 === */
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            /* 自动占据 body 剩余的高度 */
+            min-height: 0;
+            /* 必须设置，否则 flex 子元素无法产生滚动条 */
+        }
+
+        /* 视图切换按钮 */
+        .view-toggles {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            justify-content: center;
+        }
+
+        .btn-toggle {
+            padding: 8px 20px;
+            border: 2px solid var(--p-blue);
+            background: white;
+            color: var(--p-blue);
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .btn-toggle.active {
+            background: var(--p-blue);
+            color: white;
+        }
+
+        /* 控制栏 */
+        .selectors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 15px;
+            background-color: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            align-items: flex-end;
+        }
+
+        .select-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .select-group label {
+            color: #333;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        /* 【新增】输入框包装器，用于放下拉框和删除按钮 */
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        select {
+            padding: 8px;
+            font-size: 15px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            width: 120px;
+            font-family: "Microsoft YaHei";
+        }
+
+        /* ============================
+       【修改】按钮状态样式
+       ============================ */
+
+        /* 1. 小重置按钮 (默认/激活状态：淡蓝色) */
+        .btn-mini-clear {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+
+            /* 激活状态颜色 */
+            background-color: var(--p-blue);
+            color: #e6f0ff;
+
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s;
+        }
+
+        .btn-mini-clear:hover {
+            background-color: #ff6666;
+            color: white;
+        }
+
+        /* 2. 全部重置按钮 (默认/激活状态：淡蓝色) */
+        .btn-reset {
+            padding: 9px 20px;
+            border: none;
+            border-radius: 4px;
+
+            /* 激活状态颜色 */
+            background-color: var(--p-blue);
+            color: #e6f0ff;
+
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            height: 38px;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            background-color: #ff6666;
+            color: white;
+        }
+
+        /* 3. 通用禁用状态 (淡灰色，不可点击) */
+        /* 当按钮带有 disabled 属性时生效 */
+        .btn-mini-clear:disabled,
+        .btn-reset:disabled {
+            background-color: #ddd;
+            /* 淡灰背景 */
+            color: #666;
+            /* 淡灰文字 */
+            cursor: not-allowed;
+            pointer-events: none;
+            /* 禁止点击事件 */
+        }
+
+        /* 内容区 */
+        .content-area {
+            flex: 1;
+            /* 撑满 container 的剩余空间 */
+            display: flex;
+            /* 让内部元素也能 flex */
+            flex-direction: column;
+            overflow: hidden;
+            /* 隐藏溢出，强制内部滚动 */
+            position: relative;
+            border: 1px solid var(--p-border);
+            border-radius: 4px;
+        }
+
+        /* 列表模式：修正滚动行为 */
+        #listView {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .list-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 12px;
+            background-color: var(--p-blue);
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .results-list {
+            flex: 1;
+            /* 列表占满剩余空间 */
+            overflow-y: auto;
+            /* 开启垂直滚动 */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .result-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .result-row:hover {
+            background-color: var(--p-hover);
+        }
+
+        .text-highlight {
+            color: var(--p-blue);
+            font-weight: bold;
+        }
+
+        /* 表格模式：修正滚动行为 */
+        #tableView {
+            height: 100%;
+            /* 占满父容器 */
+            overflow: auto;
+            /* 开启两个方向的滚动 */
+            display: none;
+        }
+
+        .full-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 18px;
+            color: #3a3838;
+            font-family: "Microsoft YaHei", sans-serif;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        /* 修改这一段，添加 cursor: pointer */
+        .full-table th,
+        .full-table td {
+            border: 1px solid #ccc;
+            padding: 10px 5px;
+            text-align: center;
+            min-width: 60px;
+            white-space: nowrap;
+            position: relative;
+            cursor: pointer;
+            /* 【新增】鼠标变手型，提示可点击 */
+        }
+
+        .full-table thead th {
+            position: sticky;
+            top: 0;
+            background-color: var(--p-blue);
+            color: white;
+            z-index: 10;
+        }
+
+        .full-table tbody th {
+            position: sticky;
+            left: 0;
+            background-color: var(--p-blue);
+            color: white;
+            z-index: 9;
+        }
+
+        .full-table thead th:first-child {
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 11;
+            background-color: #013eb8;
+        }
+
+        /* === 高亮样式系统 === */
+
+        /* 1. 鼠标悬浮 (最低优先级) */
+        .hover-bg {
+            background-color: var(--p-hover);
+        }
+
+        /* 2. 选中高亮 (覆盖悬浮) */
+
+        /* 单元格 - 淡蓝 (用于行列) */
+        .highlight-blue {
+            background-color: var(--p-cell-highlight) !important;
+        }
+
+        /* 表头 - 稍浅的蓝 (保持白色文字) */
+        .highlight-header {
+            background-color: var(--p-blue-light) !important;
+            color: white !important;
+        }
+
+        /* 反推时的辅助背景 - 浅黄 */
+        .highlight-yellow-weak {
+            background-color: var(--p-highlight-weak) !important;
+        }
+
+        /* 关键表头 - 强黄 (最高优先级) */
+        .highlight-yellow-strong {
+            background-color: var(--p-highlight-strong) !important;
+            color: #000 !important;
+            border: 2px solid #e6b800;
+        }
+
+        /* 目标格 - 普通黄 (最高优先级) */
+        .highlight-yellow-normal {
+            background-color: var(--p-highlight-normal) !important;
+            color: #000 !important;
+        }
+
+        .empty-hint {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+        }
+
+        /* ============================
+       【修改】锁定与高亮样式 (主题蓝版)
+       ============================ */
+
+        /* 下拉框被锁定时的样式 */
+        select:disabled {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+            color: #aaa;
+            border-color: #ddd;
+        }
+
+        /* 按钮高亮样式：变为主题蓝 */
+        .btn-highlight {
+            background-color: var(--p-blue) !important;
+            /* 变为主题蓝 */
+            color: white !important;
+            border: 1px solid var(--p-blue) !important;
+            box-shadow: 0 0 8px rgba(0, 68, 204, 0.5);
+            /* 添加轻微蓝色光晕以示强调 */
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        /* 高亮按钮的悬浮效果 */
+        .btn-highlight:hover {
+            background-color: #003399 !important;
+            /* 悬浮时变深蓝 */
+            box-shadow: 0 0 12px rgba(0, 68, 204, 0.8);
+        }
+
+        /* Tooltip 提示框样式 (保持不变) */
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-wrapper[data-tooltip]:hover::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #333;
+            z-index: 100;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>P3R Persona合成查询工具</h1>
+
+    <!-- 模式切换 -->
+    <div class="view-toggles">
+        <button class="btn-toggle active" id="btnListMode" onclick="switchMode('list')">列表模式</button>
+        <button class="btn-toggle" id="btnTableMode" onclick="switchMode('table')">表格模式</button>
+    </div>
+
+    <div class="container">
+        <!-- 控制栏 -->
+        <div class="selectors">
+            <div class="select-group">
+                <label>合成材料 1 (行)</label>
+                <div class="input-wrapper">
+                    <select id="mat1">
+                        <option value="">(任意)</option>
+                    </select>
+                    <button class="btn-mini-clear" onclick="clearSingle('mat1')" title="清除">×</button>
+                </div>
+            </div>
+            <div class="select-group">
+                <label>合成材料 2 (列)</label>
+                <div class="input-wrapper">
+                    <select id="mat2">
+                        <option value="">(任意)</option>
+                    </select>
+                    <button class="btn-mini-clear" onclick="clearSingle('mat2')" title="清除">×</button>
+                </div>
+            </div>
+            <div class="select-group">
+                <label>合成产物</label>
+                <div class="input-wrapper">
+                    <select id="res">
+                        <option value="">(任意)</option>
+                    </select>
+                    <button class="btn-mini-clear" onclick="clearSingle('res')" title="清除">×</button>
+                </div>
+            </div>
+            <button class="btn-reset" onclick="resetFilters()">全部重置</button>
+        </div>
+
+        <!-- 内容区域 -->
+        <div class="content-area">
+
+            <!-- 列表视图 -->
+            <div id="listView">
+                <div class="list-header">
+                    <div>材料 1</div>
+                    <div>材料 2</div>
+                    <div>结果产物</div>
+                </div>
+                <ul id="outputList" class="results-list">
+                    <div class="empty-hint">请选择上方的任意一项以查看合成表</div>
+                </ul>
+            </div>
+
+            <!-- 表格视图 -->
+            <div id="tableView">
+                <table id="fullTable" class="full-table">
+                    <!-- JS 生成 -->
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // === 数据准备 ===
+        const arcanas = [
+            "愚者", "魔术师", "女教皇", "女皇", "皇帝", "教皇", "恋爱", "战车", "正义", "隐者",
+            "命运", "力量", "倒悬者", "死神", "节制", "恶魔", "塔", "星", "月亮", "太阳", "审判", "永劫"
+        ];
+
+        const dataMatrix = [
+            ["愚者", "教皇", "魔术师", "星", "节制", "倒悬者", "正义", "皇帝", "恋爱", "女教皇", "力量", "死神", "恶魔", "命运", "战车", "隐者", "月亮", "恶魔", "女皇", "审判", "永劫", "死神"],
+            ["教皇", "魔术师", "正义", "倒悬者", "恋爱", "隐者", "战车", "恶魔", "教皇", "月亮", "恋爱", "皇帝", "愚者", "女教皇", "正义", "节制", "战车", "力量", "力量", "女皇", "星", "太阳"],
+            ["魔术师", "正义", "女教皇", "节制", "正义", "恋爱", "魔术师", "愚者", "恋爱", "力量", "倒悬者", "月亮", "教皇", "正义", "命运", "皇帝", "女皇", "皇帝", "星", "教皇", "倒悬者", "女皇"],
+            ["星", "倒悬者", "节制", "女皇", "战车", "塔", "月亮", "隐者", "皇帝", "太阳", "力量", "愚者", "星", "恋爱", "教皇", "塔", "恶魔", "女教皇", "永劫", "皇帝", "恋爱", "女教皇"],
+            ["节制", "恋爱", "正义", "战车", "皇帝", "力量", "战车", "恶魔", "倒悬者", "教皇", "星", "魔术师", "死神", "隐者", "星", "月亮", "力量", "教皇", "恋爱", "节制", "太阳", "命运"],
+            ["倒悬者", "隐者", "恋爱", "塔", "力量", "教皇", "魔术师", "正义", "愚者", "战车", "月亮", "命运", "力量", "命运", "隐者", "女教皇", "节制", "月亮", "魔术师", "塔", "皇帝", "太阳"],
+            ["正义", "战车", "魔术师", "月亮", "战车", "魔术师", "恋爱", "女教皇", "皇帝", "愚者", "节制", "隐者", "正义", "倒悬者", "死神", "星", "太阳", "死神", "女皇", "恶魔", "月亮", "塔"],
+            ["皇帝", "恶魔", "愚者", "隐者", "恶魔", "正义", "女教皇", "战车", "魔术师", "恋爱", "女教皇", "节制", "力量", "教皇", "隐者", "倒悬者", "星", "命运", "节制", "力量", "女皇", "隐者"],
+            ["恋爱", "教皇", "恋爱", "皇帝", "倒悬者", "愚者", "皇帝", "魔术师", "正义", "魔术师", "倒悬者", "星", "女教皇", "隐者", "月亮", "节制", "太阳", "隐者", "节制", "魔术师", "愚者", "审判"],
+            ["女教皇", "月亮", "力量", "太阳", "教皇", "战车", "愚者", "恋爱", "魔术师", "隐者", "正义", "皇帝", "节制", "战车", "魔术师", "力量", "皇帝", "愚者", "教皇", "星", "节制", "恶魔"],
+            ["力量", "恋爱", "倒悬者", "力量", "星", "月亮", "节制", "女教皇", "倒悬者", "正义", "命运", "太阳", "恶魔", "星", "塔", "女皇", "永劫", "魔术师", "死神", "审判", "太阳", "月亮"],
+            ["死神", "皇帝", "月亮", "愚者", "魔术师", "命运", "隐者", "节制", "星", "皇帝", "太阳", "力量", "战车", "女皇", "月亮", "恋爱", "倒悬者", "女教皇", "恶魔", "恋爱", "恶魔", "愚者"],
+            ["恶魔", "愚者", "教皇", "星", "死神", "力量", "正义", "力量", "女教皇", "节制", "魔术师", "战车", "倒悬者", "力量", "教皇", "女教皇", "死神", "女皇", "战车", "永劫", "塔", "死神"],
+            ["命运", "女教皇", "正义", "恋爱", "隐者", "命运", "倒悬者", "教皇", "隐者", "战车", "星", "女皇", "力量", "死神", "恶魔", "塔", "永劫", "太阳", "倒悬者", "正义", "恶魔", "不能合"],
+            ["战车", "正义", "命运", "教皇", "星", "隐者", "死神", "隐者", "月亮", "魔术师", "塔", "月亮", "教皇", "恶魔", "节制", "愚者", "恶魔", "命运", "女教皇", "战车", "女皇", "正义"],
+            ["隐者", "节制", "皇帝", "塔", "月亮", "女教皇", "星", "倒悬者", "节制", "力量", "女皇", "恋爱", "女教皇", "塔", "愚者", "恶魔", "审判", "正义", "愚者", "死神", "死神", "星"],
+            ["月亮", "战车", "女皇", "恶魔", "力量", "节制", "太阳", "星", "太阳", "皇帝", "永劫", "倒悬者", "死神", "永劫", "恶魔", "审判", "塔", "审判", "命运", "教皇", "永劫", "太阳"],
+            ["恶魔", "力量", "皇帝", "女教皇", "教皇", "月亮", "死神", "命运", "隐者", "愚者", "魔术师", "女教皇", "女皇", "太阳", "命运", "正义", "审判", "星", "太阳", "正义", "塔", "审判"],
+            ["女皇", "力量", "星", "永劫", "恋爱", "魔术师", "女皇", "节制", "节制", "教皇", "死神", "恶魔", "战车", "倒悬者", "女教皇", "愚者", "命运", "太阳", "月亮", "塔", "命运", "审判"],
+            ["审判", "女皇", "教皇", "皇帝", "节制", "塔", "恶魔", "力量", "魔术师", "星", "审判", "恋爱", "永劫", "正义", "愚者", "隐者", "审判", "正义", "塔", "太阳", "审判", "女皇"],
+            ["永劫", "星", "倒悬者", "恋爱", "太阳", "皇帝", "月亮", "女皇", "愚者", "节制", "太阳", "恶魔", "塔", "恶魔", "女皇", "死神", "永劫", "塔", "命运", "永劫", "审判", "愚者"],
+            ["死神", "太阳", "女皇", "女教皇", "命运", "太阳", "塔", "隐者", "审判", "恶魔", "月亮", "愚者", "死神", "不能合", "正义", "星", "太阳", "审判", "审判", "女皇", "愚者", "永劫"]
+        ];
+
+        // DOM 元素
+        const selectMat1 = document.getElementById('mat1');
+        const selectMat2 = document.getElementById('mat2');
+        const selectRes = document.getElementById('res');
+        const outputList = document.getElementById('outputList');
+        const fullTable = document.getElementById('fullTable');
+        let currentMode = 'list';
+
+        function init() {
+            arcanas.forEach(arc => {
+                selectMat1.add(new Option(arc, arc));
+                selectMat2.add(new Option(arc, arc));
+                selectRes.add(new Option(arc, arc));
+            });
+            generateFullTable();
+            // 绑定事件
+            selectMat1.addEventListener('change', updateAllViews);
+            selectMat2.addEventListener('change', updateAllViews);
+            selectRes.addEventListener('change', updateAllViews);
+            bindTableHoverEffects();
+
+            // 【新增】初始化时立即检查状态，使按钮变灰
+            checkLockState();
+            // ============================
+            // 【新增】表格点击交互逻辑
+            // ============================
+            fullTable.addEventListener('click', (e) => {
+                // 1. 找到被点击的单元格 (TH 或 TD)
+                const cell = e.target.closest('td, th');
+                if (!cell) return;
+
+                // 2. 获取行号和列号
+                // parentElement 是 tr，rowIndex 是该行在 table 中的索引 (0 是表头行)
+                // cellIndex 是该单元格在行中的索引 (0 是左侧行头列)
+                const rowIndex = cell.parentElement.rowIndex;
+                const colIndex = cell.cellIndex;
+
+                // 情况 A: 点击左上角 "M1\M2" -> 重置
+                if (rowIndex === 0 && colIndex === 0) {
+                    resetFilters();
+                    return;
+                }
+
+                // 情况 B: 点击顶部列名 (设置材料 2)
+                if (rowIndex === 0 && colIndex > 0) {
+                    // arcanas 数组下标从 0 开始，而表格列下标从 1 开始 (0是行头)，所以减 1
+                    const mat2Name = arcanas[colIndex - 1];
+
+                    // 如果当前点击的已经是选中的，可以选择取消选中(可选)，这里逻辑设为：
+                    // 只要点击就设置为该值
+                    selectMat2.value = mat2Name;
+
+                    // 为了避免逻辑冲突，点击表头通常意味着用户想看这一列
+                    // 这里我们保留 Material 1 的状态，只清空“产物”以避免无效组合提示
+                    selectRes.value = "";
+
+                    updateAllViews();
+                }
+
+                // 情况 C: 点击左侧行名 (设置材料 1)
+                else if (rowIndex > 0 && colIndex === 0) {
+                    const mat1Name = arcanas[rowIndex - 1];
+
+                    selectMat1.value = mat1Name;
+                    selectRes.value = "";
+
+                    updateAllViews();
+                }
+
+                // 情况 D: 点击中间数据格 (同时设置材料 1 和 2)
+                else if (rowIndex > 0 && colIndex > 0) {
+                    const mat1Name = arcanas[rowIndex - 1];
+                    const mat2Name = arcanas[colIndex - 1];
+
+                    // 同时设置两个下拉框
+                    selectMat1.value = mat1Name;
+                    selectMat2.value = mat2Name;
+
+                    // 清空产物筛选，因为确定的两个材料只能产出一个确定的结果，
+                    // 不需要再用产物去反推，而且如果旧产物和新结果不匹配会导致 conflict。
+                    selectRes.value = "";
+
+                    updateAllViews();
+                }
+            });
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            const btnList = document.getElementById('btnListMode');
+            const btnTable = document.getElementById('btnTableMode');
+
+            if (mode === 'list') {
+                btnList.classList.add('active');
+                btnTable.classList.remove('active');
+                document.getElementById('listView').style.display = 'flex';
+                document.getElementById('tableView').style.display = 'none';
+                updateListView(); // 切换回列表时刷新
+            } else {
+                btnList.classList.remove('active');
+                btnTable.classList.add('active');
+                document.getElementById('listView').style.display = 'none';
+                document.getElementById('tableView').style.display = 'block';
+                highlightTable(); // 切换回表格时立即刷新高亮
+            }
+        }
+
+        function updateAllViews() {
+            if (currentMode === 'list') updateListView();
+            else highlightTable();
+
+            // 【新增】每次视图更新后，检查锁定状态
+            checkLockState();
+        }
+
+        // === 【修改】锁定与按钮状态检查逻辑 ===
+        function checkLockState() {
+            const s1 = selectMat1;
+            const s2 = selectMat2;
+            const sRes = selectRes;
+
+            const inputs = [
+                { el: s1, wrapper: s1.parentElement, btn: s1.nextElementSibling },
+                { el: s2, wrapper: s2.parentElement, btn: s2.nextElementSibling },
+                { el: sRes, wrapper: sRes.parentElement, btn: sRes.nextElementSibling }
+            ];
+
+            const filledInputs = inputs.filter(item => item.el.value !== "");
+            const resetAllBtn = document.querySelector('.btn-reset');
+
+            // --- 逻辑 A: 控制按钮可用性 (颜色会自动随 disabled 属性变化) ---
+
+            // 1. 小重置按钮：只有当对应的下拉框有值时，才解锁(变蓝)
+            inputs.forEach(item => {
+                item.btn.disabled = (item.el.value === "");
+            });
+
+            // 2. 全部重置按钮：只要有任意一个下拉框有值，就解锁(变蓝)
+            resetAllBtn.disabled = (filledInputs.length === 0);
+
+            // --- 逻辑 B: 控制下拉框锁定 (保持之前的 >=2 锁定第3个的逻辑) ---
+
+            // 先重置所有下拉框为可用
+            inputs.forEach(item => {
+                item.el.disabled = false;
+                item.wrapper.removeAttribute('data-tooltip');
+            });
+
+            // 如果填了2个或以上，锁定剩下的空下拉框
+            if (filledInputs.length >= 2) {
+                inputs.forEach(item => {
+                    if (item.el.value === "") {
+                        item.el.disabled = true;
+                        item.wrapper.setAttribute('data-tooltip', "请重置其他选框以解锁该选框");
+                    }
+                });
+            }
+        }
+
+        // 单个清除功能
+        window.clearSingle = function (id) {
+            document.getElementById(id).value = "";
+            updateAllViews();
+        }
+
+        // 全部重置
+        window.resetFilters = function () {
+            selectMat1.value = "";
+            selectMat2.value = "";
+            selectRes.value = "";
+
+            if (currentMode === 'list') {
+                updateListView();
+            } else {
+                // 彻底清除表格所有高亮
+                clearTableHighlights();
+            }
+            checkLockState();
+        }
+
+        // 辅助：清除高亮
+        function clearTableHighlights() {
+            const classes = [
+                'highlight-blue', 'highlight-header',
+                'highlight-yellow-weak', 'highlight-yellow-strong', 'highlight-yellow-normal'
+            ];
+            fullTable.querySelectorAll('.' + classes.join(', .')).forEach(el => {
+                el.classList.remove(...classes);
+            });
+        }
+
+        // === 表格高亮核心逻辑 (更新版) ===
+        function highlightTable() {
+            clearTableHighlights();
+
+            const v1 = selectMat1.value;
+            const v2 = selectMat2.value;
+            const vr = selectRes.value;
+
+            if (!v1 && !v2 && !vr) return;
+
+            const idx1 = v1 ? arcanas.indexOf(v1) : -1;
+            const idx2 = v2 ? arcanas.indexOf(v2) : -1;
+
+            const getRow = (r) => ({
+                header: fullTable.querySelectorAll('tbody tr')[r].querySelector('th'),
+                tds: fullTable.querySelectorAll('tbody tr')[r].querySelectorAll('td')
+            });
+            const getCol = (c) => ({
+                header: fullTable.querySelector(`thead th:nth-child(${c + 2})`),
+                tds: fullTable.querySelectorAll(`tbody tr td:nth-child(${c + 2})`)
+            });
+            const getCell = (r, c) => fullTable.querySelectorAll('tbody tr')[r].querySelectorAll('td')[c];
+
+            // --- 场景 1：仅选择材料 1 (高亮行) ---
+            if (v1 && !v2 && !vr) {
+                const { header, tds } = getRow(idx1);
+                header.classList.add('highlight-header'); // 稍浅的蓝表头
+                tds.forEach(td => td.classList.add('highlight-blue')); // 淡蓝单元格
+                header.scrollIntoView({ block: "center", behavior: "smooth" });
+            }
+
+            // --- 场景 2：仅选择材料 2 (高亮列) ---
+            else if (!v1 && v2 && !vr) {
+                const { header, tds } = getCol(idx2);
+                header.classList.add('highlight-header');
+                tds.forEach(td => td.classList.add('highlight-blue'));
+                header.scrollIntoView({ inline: "center", behavior: "smooth" });
+            }
+
+            // --- 场景 3：同时选择材料 1 和 2 (高亮行列 + 交叉点强黄) ---
+            else if (v1 && v2) {
+                // 1. 高亮行 (弱)
+                const row = getRow(idx1);
+                row.header.classList.add('highlight-header');
+                row.tds.forEach(td => td.classList.add('highlight-blue'));
+
+                // 2. 高亮列 (弱)
+                const col = getCol(idx2);
+                col.header.classList.add('highlight-header');
+                col.tds.forEach(td => td.classList.add('highlight-blue'));
+
+                // 3. 高亮交叉点 (强覆盖)
+                const cell = getCell(idx1, idx2);
+                cell.classList.remove('highlight-blue'); // 移除淡蓝
+                cell.classList.add('highlight-yellow-normal'); // 加上普通黄
+
+                cell.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+            }
+
+            // --- 场景 4：仅选择产物 (高亮所有匹配格) ---
+            else if (!v1 && !v2 && vr) {
+                let firstMatch = null;
+                for (let r = 0; r < 22; r++) {
+                    for (let c = 0; c < 22; c++) {
+                        if (dataMatrix[r][c] === vr) {
+                            const cell = getCell(r, c);
+                            cell.classList.add('highlight-yellow-normal');
+                            // 也可以选择不高亮表头，或者高亮所有相关的表头
+                            // getRow(r).header.classList.add('highlight-header');
+                            // getCol(c).header.classList.add('highlight-header');
+                            if (!firstMatch) firstMatch = cell;
+                        }
+                    }
+                }
+                if (firstMatch) firstMatch.scrollIntoView({ block: "center", behavior: "smooth" });
+            }
+
+            // --- 场景 5：材料1 + 产物 (反推) ---
+            else if (v1 && !v2 && vr) {
+                const rowData = getRow(idx1);
+                rowData.header.classList.add('highlight-header'); // 当前材料行表头高亮
+                rowData.tds.forEach(td => td.classList.add('highlight-blue'));
+
+                let found = false;
+                rowData.tds.forEach((td, cIndex) => {
+                    if (dataMatrix[idx1][cIndex] === vr) {
+                        found = true;
+                        // 结果格普通黄
+                        td.classList.add('highlight-yellow-normal');
+
+                        // 反推的材料2（列）
+                        const colData = getCol(cIndex);
+                        colData.header.classList.add('highlight-yellow-strong'); // 关键表头强黄
+                        colData.tds.forEach(t => t.classList.add('highlight-yellow-weak')); // 整列淡黄辅助
+
+                        // 重新加回结果格的普通黄(防止被整列淡黄覆盖)
+                        td.classList.remove('highlight-yellow-weak');
+                        td.classList.add('highlight-yellow-normal');
+
+                        td.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+                    }
+                });
+                if (!found && currentMode === 'table') alert("该组合无法合成目标");
+            }
+
+            // --- 场景 6：材料2 + 产物 (反推) ---
+            else if (!v1 && v2 && vr) {
+                const colData = getCol(idx2);
+                colData.header.classList.add('highlight-header');
+                colData.tds.forEach(td => td.classList.add('highlight-blue'));
+
+                let found = false;
+                colData.tds.forEach((td, rIndex) => {
+                    if (dataMatrix[rIndex][idx2] === vr) {
+                        found = true;
+                        td.classList.add('highlight-yellow-normal');
+
+                        // 反推的材料1（行）
+                        const rowData = getRow(rIndex);
+                        rowData.header.classList.add('highlight-yellow-strong');
+                        rowData.tds.forEach(t => t.classList.add('highlight-yellow-weak'));
+
+                        td.classList.remove('highlight-yellow-weak');
+                        td.classList.add('highlight-yellow-normal');
+
+                        td.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+                    }
+                });
+                if (!found && currentMode === 'table') alert("该组合无法合成目标");
+            }
+        }
+
+        // 列表模式逻辑保持不变
+        function updateListView() {
+            const val1 = selectMat1.value;
+            const val2 = selectMat2.value;
+            const valRes = selectRes.value;
+            outputList.innerHTML = '';
+
+            if (!val1 && !val2 && !valRes) {
+                outputList.innerHTML = '<div class="empty-hint">请选择上方的任意一项以查看合成表</div>';
+                return;
+            }
+
+            let results = [];
+            for (let r = 0; r < arcanas.length; r++) {
+                for (let c = 0; c < arcanas.length; c++) {
+                    const p = dataMatrix[r][c];
+                    if (p === "不能合") continue;
+                    let match = true;
+                    if (val1 && val1 !== arcanas[r]) match = false;
+                    if (val2 && val2 !== arcanas[c]) match = false;
+                    if (valRes && valRes !== p) match = false;
+
+                    if (match) {
+                        if (!val1 && !val2 && valRes && r > c) continue;
+                        results.push({ m1: arcanas[r], m2: arcanas[c], res: p });
+                    }
+                }
+            }
+
+            if (results.length === 0) {
+                outputList.innerHTML = '<div class="empty-hint">未找到匹配的合成公式</div>';
+                return;
+            }
+
+            results.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'result-row';
+                const s1 = document.createElement('span'); s1.textContent = item.m1; if (val1) s1.className = 'text-highlight';
+                const s2 = document.createElement('span'); s2.textContent = item.m2; if (val2) s2.className = 'text-highlight';
+                const s3 = document.createElement('span'); s3.textContent = item.res; if (valRes) s3.className = 'text-highlight';
+                li.append(s1, s2, s3);
+                outputList.appendChild(li);
+            });
+        }
+
+        // 生成大表格和悬浮逻辑保持不变
+        function generateFullTable() {
+            // ... (同之前的代码，生成 table dom) ...
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            headerRow.appendChild(document.createElement('th')).textContent = "M1 \\ M2";
+            arcanas.forEach(arc => headerRow.appendChild(document.createElement('th')).textContent = arc);
+            thead.appendChild(headerRow);
+            fullTable.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            for (let r = 0; r < arcanas.length; r++) {
+                const tr = document.createElement('tr');
+                tr.appendChild(document.createElement('th')).textContent = arcanas[r];
+                for (let c = 0; c < arcanas.length; c++) {
+                    const td = document.createElement('td');
+                    td.textContent = dataMatrix[r][c];
+                    if (dataMatrix[r][c] === "不能合") td.style.color = "#ccc";
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+            fullTable.appendChild(tbody);
+        }
+
+        function bindTableHoverEffects() {
+            fullTable.addEventListener('mouseover', (e) => {
+                const cell = e.target.closest('td, th');
+                if (!cell) return;
+                // 清除旧悬浮
+                fullTable.querySelectorAll('.hover-bg').forEach(el => el.classList.remove('hover-bg'));
+
+                // 行悬浮
+                cell.parentElement.querySelectorAll('td, th').forEach(el => el.classList.add('hover-bg'));
+                // 列悬浮
+                const colIdx = cell.cellIndex;
+                if (colIdx > 0) {
+                    fullTable.querySelectorAll(`tbody tr td:nth-child(${colIdx + 1})`).forEach(td => td.classList.add('hover-bg'));
+                    fullTable.querySelector(`thead th:nth-child(${colIdx + 1})`).classList.add('hover-bg');
+                }
+            });
+            fullTable.addEventListener('mouseout', () => {
+                fullTable.querySelectorAll('.hover-bg').forEach(el => el.classList.remove('hover-bg'));
+            });
+        }
+
+        init();
+        switchMode('list');
+    </script>
+
+</body>
+
+</html>
