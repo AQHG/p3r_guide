@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
     <style>
         :root {
             --p3-dark: #10141a;
-            --p3-blue: #00d2ff; /* P3R 青色 */
+            --p3-blue: #00d2ff;
+            /* P3R 青色 */
             --p3-blue-dim: #005a70;
             --p3-accent: #d4e3e8;
             --p3-card-bg: rgba(20, 25, 35, 0.9);
@@ -26,7 +28,8 @@
             padding: 0;
             line-height: 1.6;
             min-height: 100vh;
-            overflow-x: hidden; /* 防止横向滚动 */
+            overflow-x: hidden;
+            /* 防止横向滚动 */
         }
 
         /* --- 布局容器 (Flexbox) --- */
@@ -55,6 +58,7 @@
         .sidebar::-webkit-scrollbar {
             width: 6px;
         }
+
         .sidebar::-webkit-scrollbar-thumb {
             background-color: var(--p3-blue-dim);
         }
@@ -80,7 +84,8 @@
         .toc-list ul {
             list-style: none;
             padding-left: 15px;
-            display: none; /* 默认折叠 */
+            display: none;
+            /* 默认折叠 */
             border-left: 1px dashed rgba(0, 210, 255, 0.3);
         }
 
@@ -114,32 +119,52 @@
             font-size: 0.8rem;
             transition: transform 0.2s;
         }
-        
-        .toc-item.expanded > .toc-link > .toc-toggle {
+
+        .toc-item.expanded>.toc-link>.toc-toggle {
             transform: rotate(90deg);
         }
 
-        .toc-item.expanded > ul {
-            display: block; /* 展开显示 */
+        .toc-item.expanded>ul {
+            display: block;
+            /* 展开显示 */
             animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* 层级缩进微调 */
-        .toc-level-1 > .toc-link { font-weight: bold; color: var(--p3-blue); font-size: 1rem; }
-        .toc-level-2 > .toc-link { font-weight: 600; }
-        .toc-level-3 > .toc-link { font-size: 0.85rem; }
+        .toc-level-1>.toc-link {
+            font-weight: bold;
+            color: var(--p3-blue);
+            font-size: 1rem;
+        }
+
+        .toc-level-2>.toc-link {
+            font-weight: 600;
+        }
+
+        .toc-level-3>.toc-link {
+            font-size: 0.85rem;
+        }
 
         /* --- 右侧主内容区域 --- */
         .main-content {
             flex: 1;
-            margin-left: var(--sidebar-width); /* 为侧边栏留出空间 */
+            margin-left: var(--sidebar-width);
+            /* 为侧边栏留出空间 */
             padding: 20px 40px;
-            max-width: 1200px; /* 内容最大宽度 */
+            max-width: 1200px;
+            /* 内容最大宽度 */
         }
 
         /* --- 原有样式保留与微调 --- */
@@ -170,7 +195,8 @@
             background: linear-gradient(90deg, rgba(0, 210, 255, 0.1), transparent);
             padding-top: 5px;
             padding-bottom: 5px;
-            scroll-margin-top: 20px; /* 跳转时留出顶部间距 */
+            scroll-margin-top: 20px;
+            /* 跳转时留出顶部间距 */
         }
 
         h3 {
@@ -187,14 +213,49 @@
             scroll-margin-top: 20px;
         }
 
-        a { color: var(--p3-blue); text-decoration: none; transition: 0.3s; }
-        .tool-link { display: inline-block; background: rgba(0, 210, 255, 0.1); border: 1px solid var(--p3-blue); padding: 10px 20px; margin: 5px; border-radius: 4px; font-weight: bold; }
-        .tool-link:hover { background: var(--p3-blue); color: #000; box-shadow: 0 0 15px var(--p3-blue); }
+        a {
+            color: var(--p3-blue);
+            text-decoration: none;
+            transition: 0.3s;
+        }
 
-        .tips-box { background: rgba(255, 255, 255, 0.05); border: 1px dashed var(--p3-blue-dim); padding: 20px; border-radius: 8px; margin-bottom: 30px; }
-        .tips-box ul { padding-left: 20px; }
-        .tips-box li { margin-bottom: 8px; color: var(--text-sub); }
-        .star { color: #ffeb3b; text-shadow: 0 0 5px #ffeb3b; }
+        .tool-link {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--p3-blue);
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .tool-link:hover {
+            background: var(--p3-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--p3-blue);
+        }
+
+        .tips-box {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed var(--p3-blue-dim);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .tips-box ul {
+            padding-left: 20px;
+        }
+
+        .tips-box li {
+            margin-bottom: 8px;
+            color: var(--text-sub);
+        }
+
+        .star {
+            color: #ffeb3b;
+            text-shadow: 0 0 5px #ffeb3b;
+        }
 
         /* --- 图片样式 (增加点击放大手势) --- */
         img {
@@ -204,36 +265,172 @@
             border: 1px solid #333;
             display: block;
             margin: 10px 0;
-            cursor: zoom-in; /* 提示可点击 */
+            cursor: zoom-in;
+            /* 提示可点击 */
             transition: transform 0.2s;
         }
+
         img:hover {
             transform: scale(1.01);
             box-shadow: 0 6px 12px var(--p3-blue);
         }
 
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .coop-card { background: var(--p3-card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; transition: transform 0.2s, box-shadow 0.2s; position: relative; overflow: hidden; }
-        .coop-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: var(--p3-blue); }
-        .coop-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--p3-blue); }
-        .coop-info p { margin: 5px 0; color: var(--text-sub); font-size: 0.95rem; }
-        .coop-info strong { color: #fff; }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
 
-        .table-wrapper { overflow-x: auto; margin: 20px 0; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        table { width: 100%; border-collapse: collapse; background: #1a1f29; min-width: 600px; }
-        th { background: var(--p3-blue-dim); color: #fff; padding: 12px; text-align: left; font-weight: bold; text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid #2c3e50; color: var(--text-sub); }
-        tr:hover td { background: rgba(0, 210, 255, 0.05); color: #fff; }
+        .coop-card {
+            background: var(--p3-card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
 
-        .location-section { background: rgba(0,0,0,0.3); padding: 20px; margin-bottom: 20px; border-radius: 10px; }
-        .highlight { color: var(--p3-blue); font-weight: bold; }
-        .price { color: #ff6b6b; font-family: monospace; }
-        .salary { color: #6bff8b; font-family: monospace; }
+        .coop-card:hover {
+            box-shadow: var(--shadow);
+            border-color: var(--p3-blue);
+        }
 
-        .back-to-top { position: fixed; bottom: 30px; right: 30px; background: var(--p3-blue); color: #000; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; box-shadow: 0 0 10px var(--p3-blue); opacity: 0.8; z-index: 90; }
-        
-        .big-img-container { text-align: center; margin: 20px 0; }
-        .big-img-container img { max-width: 80%; margin: 0 auto; border: 2px solid var(--p3-blue); }
+        .coop-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--p3-blue);
+        }
+
+        .coop-card-important {
+            background: var(--p3-card-bg);
+            border: 1px solid rgba(255, 235, 59, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .coop-card-important:hover {
+            box-shadow: var(--shadow);
+            border-color: #ffeb3b;
+        }
+
+        .coop-card-important::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #ffeb3b;
+        }
+
+        .coop-info p {
+            margin: 5px 0;
+            color: var(--text-sub);
+            font-size: 0.95rem;
+        }
+
+        .coop-info strong {
+            color: #fff;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a1f29;
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--p3-blue-dim);
+            color: #fff;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #2c3e50;
+            color: var(--text-sub);
+        }
+
+        tr:hover td {
+            background: rgba(0, 210, 255, 0.05);
+            color: #fff;
+        }
+
+        .location-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .highlight {
+            color: var(--p3-blue);
+            font-weight: bold;
+        }
+
+        .price {
+            color: #ff6b6b;
+            font-family: monospace;
+        }
+
+        .salary {
+            color: #6bff8b;
+            font-family: monospace;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--p3-blue);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight:bolder;
+            cursor: pointer;
+            z-index: 90;
+        }
+
+        .back-to-top:hover {
+            background: var(--p3-blue);
+            color: #000;
+            box-shadow: 0 0 15px var(--p3-blue);
+        }
+
+        .big-img-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .big-img-container img {
+            max-width: 80%;
+            margin: 0 auto;
+            border: 2px solid var(--p3-blue);
+        }
 
         /* --- 图片灯箱 (Lightbox) 样式 --- */
         .lightbox-modal {
@@ -272,13 +469,16 @@
                 transform: translateX(-100%);
                 transition: transform 0.3s;
             }
+
             .sidebar.mobile-active {
                 transform: translateX(0);
             }
+
             .main-content {
                 margin-left: 0;
                 padding: 10px;
             }
+
             /* 移动端菜单按钮 */
             .mobile-menu-btn {
                 display: block;
@@ -293,654 +493,747 @@
                 font-weight: bold;
             }
         }
-        @media (min-width: 769px) {
-            .mobile-menu-btn { display: none; }
-        }
 
+        @media (min-width: 769px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
     </style>
 </head>
+
 <body>
 
-<!-- 灯箱容器 -->
-<div id="lightbox" class="lightbox-modal">
-    <img id="lightbox-img" class="lightbox-content" src="" alt="Zoomed Image">
-</div>
+    <!-- 灯箱容器 -->
+    <div id="lightbox" class="lightbox-modal">
+        <img id="lightbox-img" class="lightbox-content" src="" alt="Zoomed Image">
+    </div>
 
-<!-- 移动端菜单按钮 -->
-<div class="mobile-menu-btn" onclick="toggleMobileSidebar()">☰ 目录</div>
+    <!-- 移动端菜单按钮 -->
+    <div class="mobile-menu-btn" onclick="toggleMobileSidebar()">☰ 目录</div>
 
-<div class="app-wrapper">
-    <!-- 左侧目录 -->
-    <nav class="sidebar" id="sidebar">
-        <div class="toc-title">系统菜单</div>
-        <ul class="toc-list" id="toc-root">
-            <!-- JS 将在此处生成目录 -->
-        </ul>
-    </nav>
+    <div class="app-wrapper">
+        <!-- 左侧目录 -->
+        <nav class="sidebar" id="sidebar">
+            <div class="toc-title">系统菜单</div>
+            <ul class="toc-list" id="toc-root">
+                <!-- JS 将在此处生成目录 -->
+            </ul>
+        </nav>
 
-    <!-- 右侧内容 -->
-    <main class="main-content" id="content-area">
-        
-        <header>
-            <h1>Persona 3 Reload</h1>
-            <p style="color: var(--text-sub); letter-spacing: 5px;">攻略档案 / S.E.E.S DATABASE</p>
-            <div style="margin-top: 20px;">
-                <a href="assets/persona_fusion_calc.html" class="tool-link" target="_blank">🎭 阿尔卡那合成工具</a>
-                <a href="https://aqiu384.github.io/megaten-fusion-tool/zh-cn/p3r/personas" class="tool-link" target="_blank">🔗 P3R 合体计算器 (Web)</a>
-            </div>
-        </header>
+        <!-- 右侧内容 -->
+        <main class="main-content" id="content-area">
 
-        <!-- 社群攻略 -->
-        <section>
-            <h2>社群攻略 (Coop)</h2>
-            
-            <div class="tips-box">
-                <h4>📅 活动时间概览</h4>
-                <div class="big-img-container">
-                    <img src="assets/coop一览.png" alt="coop一览图表">
+            <header>
+                <h1 id="page_top">Persona 3 Reload</h1>
+                <p style="color: var(--text-sub); letter-spacing: 5px;">攻略档案 / S.E.E.S DATABASE</p>
+                <div style="margin-top: 20px;">
+                    <a href="assets/persona_fusion_calc.html" class="tool-link" target="_blank">🎭 阿尔卡那合成工具</a>
+                    <a href="https://aqiu384.github.io/megaten-fusion-tool/zh-cn/p3r/personas" class="tool-link"
+                        target="_blank">🔗 P3R 合体计算器 (Web)</a>
                 </div>
-                <ul>
-                    <li><strong>休息日：</strong>指是否能在寒暑假等休息日推进Coop。</li>
-                    <li><strong>考试限制：</strong>期中期末考试前一周无法推进校内和队友Coop（<span class="highlight">【女皇】桐条美鹤除外</span>）。</li>
-                    <li><span class="star">⭐️</span> <strong>【隐者】&【太阳】：</strong>仅可在周日进行。</li>
-                    <li><span class="star">⭐️</span> <strong>【女皇】&【永劫】：</strong>解锁较晚，时间紧任务重，优先安排。</li>
-                    <li><span class="star">⭐️</span> <strong>时间管理：</strong>工作日下午尽量推校内Coop（数量多、时间少）。</li>
-                    <li><span class="star">⭐️</span> <strong>特殊面具：</strong>次年1月后和同伴的特殊剧情会解锁面具。</li>
-                </ul>
-            </div>
+            </header>
 
-            <h3>🏫 校内 Coop</h3>
-            <div class="grid-container">
-                <!-- 魔术师 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>I. 魔术师 (友近 健二)</h4>
-                        <p><strong>地点：</strong>教室内</p>
-                        <p><strong>时间：</strong>周二、四、五</p>
-                        <img src="assets/魔术师coop.png" alt="魔术师">
-                    </div>
-                </div>
-                <!-- 战车 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>VII. 战车 (宫本 一志)</h4>
-                        <p><strong>地点：</strong>操场</p>
-                        <p><strong>时间：</strong>周一、二、四、五</p>
-                        <img src="assets/战车coop.png" alt="战车">
-                    </div>
-                </div>
-                <!-- 皇帝 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>IV. 皇帝 (小田桐 秀利)</h4>
-                        <p><strong>地点：</strong>学生会办公室</p>
-                        <p><strong>时间：</strong>周一、三、五</p>
-                        <img src="assets/皇帝coop.png" alt="皇帝">
-                    </div>
-                </div>
-                <!-- 力量 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>XI. 力量 (西胁 结子)</h4>
-                        <p><strong>地点：</strong>教室外走廊</p>
-                        <p><strong>时间：</strong>周三、六</p>
-                        <img src="assets/力量coop.png" alt="力量">
-                    </div>
-                </div>
-                <!-- 正义 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>VIII. 正义 (伏见 千寻)</h4>
-                        <p><strong>地点：</strong>学生会办公室门口</p>
-                        <p><strong>时间：</strong>周二、四、六</p>
-                        <img src="assets/正义coop.png" alt="正义">
-                    </div>
-                </div>
-                <!-- 节制 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>XIV. 节制 (贝培)</h4>
-                        <p><strong>地点：</strong>二楼教室门口/家庭科教室</p>
-                        <p><strong>时间：</strong>周二、三、五</p>
-                        <img src="assets/节制coop.png" alt="节制">
-                    </div>
-                </div>
-                <!-- 命运 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>X. 命运 (平贺 庆介)</h4>
-                        <p><strong>地点：</strong>一楼美术教室</p>
-                        <p><strong>时间：</strong>周二、三、四</p>
-                        <img src="assets/命运coop.png" alt="命运">
-                    </div>
-                </div>
-            </div>
+            <!-- 社群攻略 -->
+            <section>
+                <h2>攻略简述</h2>
 
-            <h3>🏙️ 社会 Coop</h3>
-            <div class="grid-container">
-                <!-- 教皇 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>V. 教皇 (北村 文吉)</h4>
-                        <p><strong>地点：</strong>旧书店 书虫 (商店街)</p>
-                        <p><strong>时间：</strong>除周一外</p>
-                        <img src="assets/教皇coop.png" alt="教皇">
-                    </div>
-                </div>
-                <!-- 隐者 -->
-                <div class="coop-card" style="border-color: #ffeb3b;">
-                    <div class="coop-info">
-                        <h4>IX. 隐者 (Y子) <span class="star">⭐️</span></h4>
-                        <p><strong>地点：</strong>自己的房间 (电脑)</p>
-                        <p><strong>时间：</strong>周日、休息日</p>
-                        <img src="assets/隐者coop.png" alt="隐者">
-                    </div>
-                </div>
-                <!-- 倒悬者 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>XII. 倒悬者 (大桥 舞子)</h4>
-                        <p><strong>地点：</strong>长鸣神社</p>
-                        <p><strong>时间：</strong>周一、三、六、休</p>
-                        <img src="assets/倒悬者coop.png" alt="倒悬者">
-                    </div>
-                </div>
-                <!-- 月 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>XVIII. 月 (末光 望美)</h4>
-                        <p><strong>地点：</strong>桐叶购物中心</p>
-                        <p><strong>时间：</strong>除周四外</p>
-                        <img src="assets/月coop.png" alt="月">
-                    </div>
-                </div>
-                <!-- 塔 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>XVI. 塔 (无达和尚)</h4>
-                        <p><strong>地点：</strong>放纵俱乐部 (晚上)</p>
-                        <p><strong>时间：</strong>周四至周日、休息日</p>
-                        <img src="assets/塔coop.png" alt="塔">
-                    </div>
-                </div>
-                <!-- 恶魔 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>XV. 恶魔 (田中社长)</h4>
-                        <p><strong>地点：</strong>桐叶购物中心 (晚上)</p>
-                        <p><strong>时间：</strong>周二、六</p>
-                        <img src="assets/恶魔coop.png" alt="恶魔">
-                    </div>
-                </div>
-                <!-- 星 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>XVII. 星 (早濑 护)</h4>
-                        <p><strong>地点：</strong>商店街 (长椅)</p>
-                        <p><strong>时间：</strong>周二、三、五、日、休</p>
-                        <img src="assets/星coop.png" alt="星">
-                    </div>
-                </div>
-                <!-- 太阳 -->
-                <div class="coop-card" style="border-color: #ffeb3b;">
-                    <div class="coop-info">
-                        <h4>XIX. 太阳 (神木 秋成) <span class="star">⭐️</span></h4>
-                        <p><strong>地点：</strong>长鸣神社</p>
-                        <p><strong>时间：</strong>周日下午</p>
-                        <img src="assets/太阳coop.png" alt="太阳">
-                    </div>
-                </div>
-            </div>
-
-            <h3>🛡️ 队内 Coop (S.E.E.S)</h3>
-            <div class="grid-container">
-                <!-- 女教皇 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>II. 女教皇 (山岸 风花)</h4>
-                        <p><strong>地点：</strong>二楼教室外走廊</p>
-                        <p><strong>时间：</strong>周一、五、六</p>
-                        <img src="assets/女教皇coop.png" alt="女教皇">
-                    </div>
-                </div>
-                <!-- 恋爱 -->
-                <div class="coop-card">
-                    <div class="coop-info">
-                        <h4>VI. 恋爱 (岳羽 由加莉)</h4>
-                        <p><strong>地点：</strong>教室</p>
-                        <p><strong>时间：</strong>周一、三、四、六</p>
-                        <img src="assets/恋爱coop.png" alt="恋爱">
-                    </div>
-                </div>
-                <!-- 女皇 -->
-                <div class="coop-card" style="border-color: #ffeb3b;">
-                    <div class="coop-info">
-                        <h4>III. 女皇 (桐条 美鹤) <span class="star">⭐️</span></h4>
-                        <p><strong>地点：</strong>一楼大厅 (待确认)</p>
-                        <p><strong>时间：</strong>除周日外</p>
-                        <p style="color: #ff6b6b; font-size: 0.8rem;">⚠️ 7-8级第3个问题选“欢迎随时倾诉”进恋人线</p>
-                        <img src="assets/女皇coop.png" alt="女皇">
-                    </div>
-                </div>
-                <!-- 永劫 -->
-                <div class="coop-card" style="border-color: #ffeb3b;">
-                    <div class="coop-info">
-                        <h4>XX. 永劫 (埃癸斯) <span class="star">⭐️</span></h4>
-                        <p><strong>地点：</strong>教室内</p>
-                        <p><strong>时间：</strong>除周日外</p>
-                        <img src="assets/永劫coop.png" alt="永劫">
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 大地图 -->
-        <section>
-            <h2>大地图 & 设施指南</h2>
-
-            <!-- 学生宿舍 -->
-            <div class="location-section">
-                <h3>🏢 学生宿舍</h3>
-
-                <h4>常规活动</h4>
-                
                 <div class="tips-box">
-                    <p><span class="star">⭐️</span> <strong>与同伴共度时光：</strong>可解锁同伴面具特性；10月初会有同伴离队，务必在此之前解锁全员1级特性。解锁1级特性后继续互动可解锁2级特性。</p>
+                    <ul>
+                        <li>三维提升优先级：勇气＞魅力＞学力</li>
+                        <li>前期主要通过严户台商店街的隐藏套餐和桐叶购物中心的游戏厅提升三维（详见<a href="#point_up">严户台商店街</a>），主升勇气，其次魅力，无需刻意提升学力</li>
+                        <li>上课不要睡觉，每次+2学力。</li>
+                        <li>塔尔塔罗斯中会出现需要前往解救的失踪人员，一般在截止日前2-15天内出现，建议将爬塔活动放在截止日前几天，以减少进塔次数</li>
+                        <li>解锁神社后每日可在神龛处免费复制一张技能卡</li>
+                        <li>优先推进校内coop，因为节假日、寒暑假、考前一周都无法推进大部分校内coop（详见<a href="#coop_time">活动时间概览</a>）</li>
+                    </ul>
                 </div>
 
-                <ul>
-                    <li><strong>考前一起学习：</strong>学力 +4</li>
-                    <li><strong>考前大型学习会：</strong>学力 +5</li>
-                    <li><strong>公用电脑：</strong>可使用从“漫画之星”和“放纵俱乐部”购买的软件</li>
-                    <li><strong>电视 <span class="star">⭐️</span>：</strong>田中购物频道（每周日上午）</li>
-                    <li><strong>厨房：</strong>冰箱清理日可制作“冰镇鲷鱼烧”等物品。
-                        <br><small style="color: #c7c7c7;">日期：5/2, 5/31, 6/16, 6/30, 7/29, 8/27, 9/13, 9/26, 10/25, 11/11, 12/10, 12/23, 1/9, 1/22</small>
-                    </li>
-                    <li><strong>天台：</strong>可种植蔬菜（用于烹饪或战斗物品）</li>
-                </ul>
+                <h2>社群攻略 (Coop)</h2>
 
-                <h4>公用电脑软件一览</h4>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th width="30%">软件名称</th>
-                                <th>作用</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>高品位礼仪教学 / 看一看就能减 / 心跳技巧</td><td>魅力 +4</td></tr>
-                            <tr><td>山间补习班 / MOBA英语对话 / 英才脑锻炼</td><td>学力 +4</td></tr>
-                            <tr><td>动物黑白棋 / PC战国记 / 打字食尸鬼</td><td>勇气 +4</td></tr>
-                            <tr><td>打工的规范</td><td>打工工资提高</td></tr>
-                            <tr><td>种菜模拟器</td><td>增加天台菜园收货数量</td></tr>
-                            <tr><td>超级肌肉训练营 / 想象锻炼</td><td>HP最大值提升 +7 / +9</td></tr>
-                            <tr><td>冥想训练营 / 不会失败的精神锻炼</td><td>SP最大值提升 +5 / +7</td></tr>
-                            <tr><td>海牛粉丝手册</td><td>解锁海牛餐厅</td></tr>
-                            <tr><td>反恐情报站的字条</td><td>学会技巧“强袭攻击”</td></tr>
-                            <tr><td>暗杀拳网站的字条</td><td>强袭攻击获得强化：必定动摇</td></tr>
-                            <tr><td>历史学投稿站的字条</td><td>强袭攻击获得强化：成功时，神通法计量条上升提高</td></tr>
-                            <tr><td>忍者粉丝站的字条</td><td>强袭攻击获得强化：冲刺需要的准备时间减少</td></tr>
-                            <tr><td>结缘网站的字条 <span class="star">⭐️</span></td><td>解锁线上结缘神签 (补好感度)</td></tr>
-                            <tr><td>严户台/菜园博客 字条</td><td>解锁售货机饮料种类 / 花店黄金番茄</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
-            <!-- 长鸣神社 -->
-            <div class="location-section">
-                <h3>⛩️ 长鸣神社</h3>
-                <ul>
-                    <li><strong>稻荷祠堂 <span class="star">⭐️</span>：</strong>每日可复制一张技能卡。</li>
-                    <li><strong>香火钱：</strong>
-                        <ul>
-                            <li>(<span class="price">￥100 / ￥1000</span>) -> 学力+2</li>
-                            <li>(<span class="price">￥10000</span>) -> 学力+5</li>
-                        </ul>
-                    </li>
-                    <li><strong>结缘神签 <span class="star">⭐️</span>：</strong>提升指定社群好感度 (<span class="price">￥100</span>)。</li>
-                </ul>
-            </div>
-
-            <!-- 桐叶购物中心 -->
-            <div class="location-section">
-                <h3>🛍️ 桐叶购物中心</h3>
-                <h4>常规活动</h4>
-                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-                    <div style="flex: 1; min-width: 300px;">
-                        <ul>
-                            <li><strong>天鹅绒房间 <span class="star">⭐️</span>：</strong>卡拉OK下楼梯后侧巷子。</li>
-                            <li><strong>辰巳东派出所：</strong>武器防具饰品 (周一促销)。</li>
-                            <li><strong>蓝胡子药房：</strong>药品 (周六促销)。</li>
-                            <li><strong>真宵堂：</strong>古董店，合成高级装备/卡片。</li>
-                            <li><strong>放纵俱乐部：</strong>情报(电脑软件)、占卜(Buff)、宝石。</li>
-                        </ul>
+                <h3 id="coop_time">📅 活动时间概览</h3>
+                <div class="tips-box">
+                    <div class="big-img-container">
+                        <img src="assets/coop一览.png" alt="coop一览图表">
                     </div>
-                    <div style="flex: 1; min-width: 300px;">
-                        <ul>
-                            <li><strong>卡拉OK 曼德拉草：</strong>勇气+2 (<span class="price">￥800</span>)</li>
-                            <li><strong>咖啡店夏卡尔：</strong>魅力+2 (<span class="price">￥500</span>) / 打工(一二三)(<span class="salary">￥2500</span>)</li>
-                            <li><strong>Be blue V：</strong>恢复遗忘技能 (<span class="price">￥3000</span>) / 打工(周一至五)(<span class="salary">￥3500</span>)</li>
-                            <li><strong>电玩大放纵 <span class="star">⭐️</span>：</strong>提升三维或面具五维，具体信息见下表</li>
-                        </ul>
-                    </div>
+                    <ul>
+                        <li><strong>休息日：</strong>指是否能在寒暑假等休息日推进Coop。</li>
+                        <li><strong>考试限制：</strong>期中期末考试前一周无法推进校内和队友Coop（<span class="highlight">【女皇】桐条美鹤除外</span>）。
+                        </li>
+                        <li><span class="star">⭐️</span> <strong>【隐者】&【太阳】：</strong>仅可在周日进行。</li>
+                        <li><span class="star">⭐️</span> <strong>【女皇】&【永劫】：</strong>解锁较晚，时间紧任务重，优先安排。</li>
+                        <li><span class="star">⭐️</span> <strong>【星】：</strong>coop等级涉及某个重要技能的解锁，建议升满。</li>
+                        <li><span class="star">⭐️</span> <strong>时间管理：</strong>工作日下午尽量推校内Coop（数量多、时间少）。</li>
+                        <li><span class="star">⭐️</span> <strong>特殊面具：</strong>次年1月后和同伴的特殊剧情会解锁面具。</li>
+                    </ul>
                 </div>
 
-                <h4>电玩大放纵 价目表</h4>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>星期</th>
-                                <th>⭐️ 能力值提升 (五维)</th>
-                                <th>面具属性提升</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>周一、四</td>
-                                <td>《青春高校》魅力+4 (<span class="price">￥1500</span>)</td>
-                                <td>《重拳战士》力+3 (<span class="price">￥2000</span>)</td>
-                            </tr>
-                            <tr>
-                                <td>周二、五</td>
-                                <td>《死亡之怖》勇气+4 (<span class="price">￥3000</span>)</td>
-                                <td>《命定赛车》速+3 (<span class="price">￥2000</span>)</td>
-                            </tr>
-                            <tr>
-                                <td>周三、六</td>
-                                <td>《你就是答案》学力+4 (<span class="price">￥3000</span>)</td>
-                                <td>《占卜之馆》魔+3 (<span class="price">￥2000</span>)</td>
-                            </tr>
-                            <tr>
-                                <td>周日</td>
-                                <td>-</td>
-                                <td>全属性游戏开放 (<span class="price">￥2000</span>)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 严户台商店街 -->
-            <div class="location-section">
-                <h3>🍔 严户台站前商店街</h3>
-                <h4>常规活动</h4>
-                <ul>
-                    <li><strong>怀老鸭汉堡 <span class="star">⭐️</span>：</strong>提升勇气</li>
-                    <li><strong>定食 若津 <span class="star">⭐️</span>：</strong>提升学力</li>
-                    <li><strong>锅岛拉面 叶隐 <span class="star">⭐️</span>：</strong>提升魅力</li>
-                    <li><strong>漫画之星：</strong>购买软件</li>
-                </ul>
+                <h3>🏫 校内 Coop</h3>
                 <div class="grid-container">
+                    <!-- 魔术师 -->
                     <div class="coop-card">
-                        <h4>怀老鸭汉堡菜单</h4>
-                        <p class="highlight">常规套餐</p>
-                        <p>新品汉堡套餐：勇气+3 (<span class="price">￥1000</span>)</p>
-                        <p class="highlight">隐藏套餐</p>
-                        <p>⭐️ 周末怀老鸭套餐：勇气+4 (<span class="price">￥1200</span>)</p>
-                        <small>解锁条件：完成伊丽莎白委托“大胃王挑战”</small>
-                        </br>
-                        <small>开放时间：周六、日 晚上</small>
-                        <p>大胃王挑战：全能力+4 (伊丽莎白委托解锁)</p>
+                        <div class="coop-info">
+                            <h4>I. 魔术师 (友近 健二)</h4>
+                            <p><strong>地点：</strong>教室内</p>
+                            <p><strong>时间：</strong>周二、四、五</p>
+                            <img src="assets/魔术师coop.png" alt="魔术师">
+                        </div>
                     </div>
-                    
+                    <!-- 战车 -->
                     <div class="coop-card">
-                        <h4>定食 若津菜单</h4>
-                        <p class="highlight">常规套餐</p>
-                        <p>DHA满满套餐：学力+3 (<span class="price">￥680</span>)</p>
-                        <p class="highlight">隐藏套餐</p>
-                        <p>⭐️ 水产全席套餐：学力+4 (<span class="price">￥900</span>)</p>
-                        <small>解锁条件：周一/四/五/日 晚上到店使用常规套餐</small>
-                        </br>
-                        <small>开放时间：周一/四/五/日 晚上</small>
+                        <div class="coop-info">
+                            <h4>VII. 战车 (宫本 一志)</h4>
+                            <p><strong>地点：</strong>教室内</p>
+                            <p><strong>时间：</strong>周一、二、四、五</p>
+                            <img src="assets/战车coop.png" alt="战车">
+                        </div>
                     </div>
-
+                    <!-- 皇帝 -->
                     <div class="coop-card">
-                        <h4>锅岛拉面 叶隐菜单</h4>
-                        <p class="highlight">常规套餐</p>
-                        <p>猪颈肉酱拉面：魅力+3 (<span class="price">￥900</span>)</p>
-                        <p class="highlight">隐藏套餐</p>
-                        <p>⭐️ 特选叶隐盖饭：魅力+4 (<span class="price">￥1200</span>)</p>
-                        <small>解锁条件：周二/三/五 晚上到店使用常规套餐</small>
-                        </br>
-                        <small>开放时间：周二/三/五 晚上</small>
+                        <div class="coop-info">
+                            <h4>IV. 皇帝 (小田桐 秀利)</h4>
+                            <p><strong>地点：</strong>学生会办公室</p>
+                            <p><strong>时间：</strong>周一、三、五</p>
+                            <img src="assets/皇帝coop.png" alt="皇帝">
+                        </div>
+                    </div>
+                    <!-- 力量 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>XI. 力量 (西胁 结子)</h4>
+                            <p><strong>地点：</strong>教室外走廊转角</p>
+                            <p><strong>时间：</strong>周三、六</p>
+                            <img src="assets/力量coop.png" alt="力量">
+                        </div>
+                    </div>
+                    <!-- 正义 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>VIII. 正义 (伏见 千寻)</h4>
+                            <p><strong>地点：</strong>学生会办公室门口</p>
+                            <p><strong>时间：</strong>周二、四、六</p>
+                            <img src="assets/正义coop.png" alt="正义">
+                        </div>
+                    </div>
+                    <!-- 节制 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>XIV. 节制 (贝培)</h4>
+                            <p><strong>地点：</strong>教室门口</p>
+                            <p><strong>时间：</strong>周二、三、五</p>
+                            <img src="assets/节制coop.png" alt="节制">
+                        </div>
+                    </div>
+                    <!-- 命运 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>X. 命运 (平贺 庆介)</h4>
+                            <p><strong>地点：</strong>一楼美术教室</p>
+                            <p><strong>时间：</strong>周二、三、四</p>
+                            <img src="assets/命运coop.png" alt="命运">
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-            <!-- 其他 -->
-             <div class="location-section">
-                <h3>其他地点</h3>
-                <ul>
-                    <li><strong>月光馆学院：</strong>上课不要睡觉（提升学力）。</li>
-                    <li><strong>港湾人工岛 - 莱弗士花店：</strong>购买花卉（礼物）和作物种子。</li>
-                    <li><strong>港湾人工岛 - 电影院：</strong>看电影（提升三维）；打工(周六、日)(<span class="salary">￥5000</span>)。</li>
-                </ul>
-            </div>
 
-        </section>
+                <h3>🏙️ 社会 Coop</h3>
+                <div class="grid-container">
+                    <!-- 教皇 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>V. 教皇 (北村 文吉)</h4>
+                            <p><strong>地点：</strong>商店街-旧书店 书虫</p>
+                            <p><strong>时间：</strong>除周一外</p>
+                            <img src="assets/教皇coop.png" alt="教皇">
+                        </div>
+                    </div>
+                    <!-- 隐者 -->
+                    <div class="coop-card-important">
+                        <div class="coop-info">
+                            <h4>IX. 隐者 (Y子) <span class="star">⭐️</span></h4>
+                            <p><strong>地点：</strong>学生宿舍-自己的房间</p>
+                            <p><strong>时间：</strong>周日、休息日</p>
+                            <img src="assets/隐者coop.png" alt="隐者">
+                        </div>
+                    </div>
+                    <!-- 倒悬者 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>XII. 倒悬者 (大桥 舞子)</h4>
+                            <p><strong>地点：</strong>长鸣神社-攀爬架旁</p>
+                            <p><strong>时间：</strong>周一、三、六、休</p>
+                            <img src="assets/倒悬者coop.png" alt="倒悬者">
+                        </div>
+                    </div>
+                    <!-- 月 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>XVIII. 月 (末光 望美)</h4>
+                            <p><strong>地点：</strong>桐叶购物中心-喷泉长椅上</p>
+                            <p><strong>时间：</strong>除周四外</p>
+                            <img src="assets/月coop.png" alt="月">
+                        </div>
+                    </div>
+                    <!-- 塔 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>XVI. 塔 (无达和尚)</h4>
+                            <p><strong>地点：</strong>桐叶购物中心-放纵俱乐部 (晚上)</p>
+                            <p><strong>时间：</strong>周四至周日、休息日</p>
+                            <img src="assets/塔coop.png" alt="塔">
+                        </div>
+                    </div>
+                    <!-- 恶魔 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>XV. 恶魔 (田中社长)</h4>
+                            <p><strong>地点：</strong>桐叶购物中心 (晚上)</p>
+                            <p><strong>时间：</strong>周二、六</p>
+                            <img src="assets/恶魔coop.png" alt="恶魔">
+                        </div>
+                    </div>
+                    <!-- 星 -->
+                    <div class="coop-card-important">
+                        <div class="coop-info">
+                            <h4>XVII. 星 (早濑 护) <span class="star">⭐️</span></h4>
+                            <p><strong>地点：</strong>严户台商店街-一楼</p>
+                            <p><strong>时间：</strong>周二、三、五、日、休</p>
+                            <img src="assets/星coop.png" alt="星">
+                        </div>
+                    </div>
+                    <!-- 太阳 -->
+                    <div class="coop-card-important">
+                        <div class="coop-info">
+                            <h4>XIX. 太阳 (神木 秋成) <span class="star">⭐️</span></h4>
+                            <p><strong>地点：</strong>长鸣神社-长椅上</p>
+                            <p><strong>时间：</strong>周日下午</p>
+                            <img src="assets/太阳coop.png" alt="太阳">
+                        </div>
+                    </div>
+                </div>
 
-        <footer style="text-align: center; margin-top: 50px; padding: 20px; color: #555; border-top: 1px solid #333;">
-            <p>Persona 3 Reload Guide</p>
-        </footer>
+                <h3>🛡️ 队内 Coop (S.E.E.S)</h3>
+                <div class="grid-container">
+                    <!-- 女教皇 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>II. 女教皇 (山岸 风花)</h4>
+                            <p><strong>地点：</strong>教室外走廊</p>
+                            <p><strong>时间：</strong>周一、五、六</p>
+                            <img src="assets/女教皇coop.png" alt="女教皇">
+                        </div>
+                    </div>
+                    <!-- 恋爱 -->
+                    <div class="coop-card">
+                        <div class="coop-info">
+                            <h4>VI. 恋爱 (岳羽 由加莉)</h4>
+                            <p><strong>地点：</strong>教室内</p>
+                            <p><strong>时间：</strong>周一、三、四、六</p>
+                            <img src="assets/恋爱coop.png" alt="恋爱">
+                        </div>
+                    </div>
+                    <!-- 女皇 -->
+                    <div class="coop-card-important">
+                        <div class="coop-info">
+                            <h4>III. 女皇 (桐条 美鹤) <span class="star">⭐️</span></h4>
+                            <p><strong>地点：</strong>教职工办公室外</p>
+                            <p><strong>时间：</strong>除周日外</p>
+                            <p style="color: #ff6b6b; font-size: 0.8rem;">⚠️ 7-8级第3个问题选“欢迎随时倾诉”进恋人线</p>
+                            <img src="assets/女皇coop.png" alt="女皇">
+                        </div>
+                    </div>
+                    <!-- 永劫 -->
+                    <div class="coop-card-important">
+                        <div class="coop-info">
+                            <h4>XX. 永劫 (埃癸斯) <span class="star">⭐️</span></h4>
+                            <p><strong>地点：</strong>教室内</p>
+                            <p><strong>时间：</strong>除周日外</p>
+                            <img src="assets/永劫coop.png" alt="永劫">
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-        <a href="#" class="back-to-top" title="返回顶部">↑</a>
-    </main>
-</div>
+            <!-- 大地图 -->
+            <section>
+                <h2>大地图 & 设施指南</h2>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // --- 1. 自动生成目录 (TOC) 逻辑 ---
-        const contentArea = document.getElementById('content-area');
-        const tocRoot = document.getElementById('toc-root');
-        
-        // 获取所有 H1, H2, H3
-        const headers = contentArea.querySelectorAll('h1, h2, h3');
-        
-        // 辅助函数：创建目录项 DOM 结构
-        function createTocItem(header, level) {
-            // 为标题生成ID (如果不存在)
-            if (!header.id) {
-                header.id = 'section-' + Math.random().toString(36).substr(2, 9);
-            }
-            
-            const li = document.createElement('li');
-            li.className = 'toc-item toc-level-' + level;
-            
-            const link = document.createElement('a');
-            link.className = 'toc-link';
-            
-            // 展开图标 (默认隐藏，有子元素时显示)
-            const toggleIcon = document.createElement('span');
-            toggleIcon.className = 'toc-toggle';
-            toggleIcon.innerHTML = '▶'; 
-            toggleIcon.style.opacity = '0'; // 初始完全透明
-            
-            const textSpan = document.createElement('span');
-            textSpan.textContent = header.innerText;
-            
-            link.appendChild(toggleIcon);
-            link.appendChild(textSpan);
-            
-            // 点击文字跳转
-            textSpan.addEventListener('click', (e) => {
-                e.preventDefault();
-                
-                // --- 修改开始：自定义偏移跳转 ---
-                const offset = 120; // 这里设置你想要保留的顶部距离（像素）
-                const elementPosition = header.getBoundingClientRect().top + window.scrollY;
-                const offsetPosition = elementPosition - offset;
-        
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-                // 移动端点击后自动收起菜单
-                if(window.innerWidth <= 768) {
-                    document.getElementById('sidebar').classList.remove('mobile-active');
+                <!-- 学生宿舍 -->
+                <div class="location-section">
+                    <h3>🏢 学生宿舍</h3>
+
+                    <h4>常规活动</h4>
+
+                    <div class="tips-box">
+                        <p><span class="star">⭐️</span>
+                            <strong>与同伴共度时光：</strong>可解锁同伴面具特性；10月初会有同伴离队，务必在此之前解锁全员1级特性。解锁1级特性后继续互动可解锁2级特性。</p>
+                    </div>
+
+                    <ul>
+                        <li><strong>考前一起学习：</strong>学力 +4</li>
+                        <li><strong>考前大型学习会：</strong>学力 +5</li>
+                        <li><strong>公用电脑：</strong>可使用从“漫画之星”和“放纵俱乐部”购买的软件</li>
+                        <li><strong>电视 <span class="star">⭐️</span>：</strong>田中购物频道（每周日上午）</li>
+                        <li><strong>厨房：</strong>冰箱清理日可放入“温吞鲷鱼烧”，次日或之后再打开冰箱可获得“冰镇鲷鱼烧”或其他物品。
+                            <br><small style="color: #c7c7c7;">日期：5/2, 5/31, 6/16, 6/30, 7/29, 8/27, 9/13, 9/26, 10/25,
+                                11/11, 12/10, 12/23, 1/9, 1/22</small>
+                        </li>
+                        <li><strong>天台：</strong>可种植蔬菜（战斗道具）</li>
+                    </ul>
+
+                    <h4>公用电脑软件一览</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="30%">软件名称</th>
+                                    <th>作用</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>高品位礼仪教学 / 看一看就能减 / 心跳技巧</td>
+                                    <td>魅力 +4</td>
+                                </tr>
+                                <tr>
+                                    <td>山间补习班 / MOBA英语对话 / 英才脑锻炼</td>
+                                    <td>学力 +4</td>
+                                </tr>
+                                <tr>
+                                    <td>动物黑白棋 / PC战国记 / 打字食尸鬼</td>
+                                    <td>勇气 +4</td>
+                                </tr>
+                                <tr>
+                                    <td>打工的规范</td>
+                                    <td>打工工资提高</td>
+                                </tr>
+                                <tr>
+                                    <td>种菜模拟器</td>
+                                    <td>增加天台菜园收货数量</td>
+                                </tr>
+                                <tr>
+                                    <td>超级肌肉训练营 / 想象锻炼</td>
+                                    <td>HP最大值提升 +7 / +9</td>
+                                </tr>
+                                <tr>
+                                    <td>冥想训练营 / 不会失败的精神锻炼</td>
+                                    <td>SP最大值提升 +5 / +7</td>
+                                </tr>
+                                <tr>
+                                    <td>海牛粉丝手册</td>
+                                    <td>解锁海牛餐厅</td>
+                                </tr>
+                                <tr>
+                                    <td>反恐情报站的字条</td>
+                                    <td>学会技巧“强袭攻击”</td>
+                                </tr>
+                                <tr>
+                                    <td>暗杀拳网站的字条</td>
+                                    <td>强袭攻击获得强化：必定动摇</td>
+                                </tr>
+                                <tr>
+                                    <td>历史学投稿站的字条</td>
+                                    <td>强袭攻击获得强化：成功时，神通法计量条上升提高</td>
+                                </tr>
+                                <tr>
+                                    <td>忍者粉丝站的字条</td>
+                                    <td>强袭攻击获得强化：冲刺需要的准备时间减少</td>
+                                </tr>
+                                <tr>
+                                    <td>结缘网站的字条 <span class="star">⭐️</span></td>
+                                    <td>解锁线上结缘神签 (补好感度)</td>
+                                </tr>
+                                <tr>
+                                    <td>严户台/菜园博客 字条</td>
+                                    <td>解锁售货机饮料种类 / 花店黄金番茄</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 长鸣神社 -->
+                <div class="location-section">
+                    <h3>⛩️ 长鸣神社</h3>
+                    <ul>
+                        <li><strong>稻荷祠堂 <span class="star">⭐️</span>：</strong>每日可复制一张技能卡。</li>
+                        <li><strong>香火钱：</strong>
+                            <ul>
+                                <li>(<span class="price">￥100 / ￥1000</span>) -> 学力+2</li>
+                                <li>(<span class="price">￥10000</span>) -> 学力+5</li>
+                            </ul>
+                        </li>
+                        <li><strong>结缘神签 <span class="star">⭐️</span>：</strong>提升指定社群好感度 (<span
+                                class="price">￥100</span>)。</li>
+                    </ul>
+                </div>
+
+                <!-- 桐叶购物中心 -->
+                <div class="location-section">
+                    <h3 id="point_up">🛍️ 桐叶购物中心</h3>
+                    <h4>常规活动</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                        <div style="flex: 1; min-width: 300px;">
+                            <ul>
+                                <li><strong>天鹅绒房间 <span class="star">⭐️</span>：</strong>卡拉OK下楼梯后侧巷子。</li>
+                                <li><strong>辰巳东派出所：</strong>武器防具饰品 (周一促销)。</li>
+                                <li><strong>蓝胡子药房：</strong>药品 (周六促销)。</li>
+                                <li><strong>真宵堂：</strong>古董店，合成高级装备/卡片。</li>
+                                <li><strong>放纵俱乐部：</strong>情报(电脑软件)、占卜(Buff)、宝石。</li>
+                            </ul>
+                        </div>
+                        <div style="flex: 1; min-width: 300px;">
+                            <ul>
+                                <li><strong>卡拉OK 曼德拉草：</strong>勇气+2 (<span class="price">￥800</span>)</li>
+                                <li><strong>咖啡店夏卡尔：</strong>魅力+2 (<span class="price">￥500</span>) / 打工(一二三)(<span
+                                        class="salary">￥2500</span>)</li>
+                                <li><strong>Be blue V：</strong>恢复遗忘技能 (<span class="price">￥3000</span>) /
+                                    打工(周一至五)(<span class="salary">￥3500</span>)</li>
+                                <li><strong>电玩大放纵 <span class="star">⭐️</span>：</strong>提升三维或面具五维，具体信息见下表</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h4>电玩大放纵 价目表</h4>
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>星期</th>
+                                    <th>⭐️ 能力值提升 (五维)</th>
+                                    <th>面具属性提升</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>周一、四</td>
+                                    <td>《青春高校》魅力+4 (<span class="price">￥1500</span>)</td>
+                                    <td>《重拳战士》力+3 (<span class="price">￥2000</span>)</td>
+                                </tr>
+                                <tr>
+                                    <td>周二、五</td>
+                                    <td>《死亡之怖》勇气+4 (<span class="price">￥3000</span>)</td>
+                                    <td>《命定赛车》速+3 (<span class="price">￥2000</span>)</td>
+                                </tr>
+                                <tr>
+                                    <td>周三、六</td>
+                                    <td>《你就是答案》学力+4 (<span class="price">￥3000</span>)</td>
+                                    <td>《占卜之馆》魔+3 (<span class="price">￥2000</span>)</td>
+                                </tr>
+                                <tr>
+                                    <td>周日</td>
+                                    <td>-</td>
+                                    <td>全属性游戏开放 (<span class="price">￥2000</span>)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 严户台商店街 -->
+                <div class="location-section">
+                    <h3>🍔 严户台站前商店街</h3>
+                    <h4>常规活动</h4>
+                    <ul>
+                        <li><strong>怀老鸭汉堡 <span class="star">⭐️</span>：</strong>提升勇气</li>
+                        <li><strong>定食 若津 <span class="star">⭐️</span>：</strong>提升学力</li>
+                        <li><strong>锅岛拉面 叶隐 <span class="star">⭐️</span>：</strong>提升魅力</li>
+                        <li><strong>漫画之星：</strong>购买软件</li>
+                    </ul>
+                    <div class="grid-container">
+                        <div class="coop-card">
+                            <h4>怀老鸭汉堡菜单</h4>
+                            <p class="highlight">常规套餐</p>
+                            <p>新品汉堡套餐：勇气+3 (<span class="price">￥1000</span>)</p>
+                            <p class="highlight">隐藏套餐</p>
+                            <p>⭐️ 周末怀老鸭套餐：勇气+4 (<span class="price">￥1200</span>)</p>
+                            <small>解锁条件：完成伊丽莎白委托“大胃王挑战”</small>
+                            </br>
+                            <small>开放时间：周六、日 晚上</small>
+                            <p>大胃王挑战：全能力+4 (伊丽莎白委托解锁)</p>
+                        </div>
+
+                        <div class="coop-card">
+                            <h4>定食 若津菜单</h4>
+                            <p class="highlight">常规套餐</p>
+                            <p>DHA满满套餐：学力+3 (<span class="price">￥680</span>)</p>
+                            <p class="highlight">隐藏套餐</p>
+                            <p>⭐️ 水产全席套餐：学力+4 (<span class="price">￥900</span>)</p>
+                            <small>解锁条件：周一/四/五/日 晚上到店使用常规套餐</small>
+                            </br>
+                            <small>开放时间：周一/四/五/日 晚上</small>
+                        </div>
+
+                        <div class="coop-card">
+                            <h4>锅岛拉面 叶隐菜单</h4>
+                            <p class="highlight">常规套餐</p>
+                            <p>猪颈肉酱拉面：魅力+3 (<span class="price">￥900</span>)</p>
+                            <p class="highlight">隐藏套餐</p>
+                            <p>⭐️ 特选叶隐盖饭：魅力+4 (<span class="price">￥1200</span>)</p>
+                            <small>解锁条件：周二/三/五 晚上到店使用常规套餐</small>
+                            </br>
+                            <small>开放时间：周二/三/五 晚上</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 其他 -->
+                <div class="location-section">
+                    <h3>其他地点</h3>
+                    <ul>
+                        <li><strong>月光馆学院：</strong>上课不要睡觉（提升学力）。</li>
+                        <li><strong>港湾人工岛 - 莱弗士花店：</strong>购买花卉（礼物）和作物种子。</li>
+                        <li><strong>港湾人工岛 - 电影院：</strong>看电影（提升三维）；打工(周六、日)(<span class="salary">￥5000</span>)。</li>
+                    </ul>
+                </div>
+
+            </section>
+
+            <footer
+                style="text-align: center; margin-top: 50px; padding: 20px; color: #555; border-top: 1px solid #333;">
+                <p>Persona 3 Reload Guide</p>
+            </footer>
+
+            <a href="#page_top" class="back-to-top" title="返回顶部">⬆</a>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- 1. 自动生成目录 (TOC) 逻辑 ---
+            const contentArea = document.getElementById('content-area');
+            const tocRoot = document.getElementById('toc-root');
+
+            // 获取所有 H1, H2, H3
+            const headers = contentArea.querySelectorAll('h1, h2, h3');
+
+            // 辅助函数：创建目录项 DOM 结构
+            function createTocItem(header, level) {
+                // 为标题生成ID (如果不存在)
+                if (!header.id) {
+                    header.id = 'section-' + Math.random().toString(36).substr(2, 9);
                 }
-            });
-            
-            // 点击图标折叠/展开 (现在绑定，但等变成父级时才有效)
-            toggleIcon.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation(); // 防止触发跳转
-                li.classList.toggle('expanded');
-            });
 
-            li.appendChild(link);
-            return { li, toggleIcon };
-        }
+                const li = document.createElement('li');
+                li.className = 'toc-item toc-level-' + level;
 
-        // --- 核心修复逻辑：基于层级的父节点追踪 ---
-        
-        // 记录每一个层级最后添加的 LI 节点
-        // Level 0 是虚拟根节点 (tocRoot)
-        const lastLiByLevel = {
-            0: tocRoot 
-        };
+                const link = document.createElement('a');
+                link.className = 'toc-link';
 
-        headers.forEach(header => {
-            const currentLevel = parseInt(header.tagName.substring(1)); // 1, 2, 3
-            const { li, toggleIcon } = createTocItem(header, currentLevel);
+                // 展开图标 (默认隐藏，有子元素时显示)
+                const toggleIcon = document.createElement('span');
+                toggleIcon.className = 'toc-toggle';
+                toggleIcon.innerHTML = '▶';
+                toggleIcon.style.opacity = '0'; // 初始完全透明
 
-            // 1. 寻找当前标题的父级容器
-            // 正常情况下，H3 的父级应该是 Level 2 的最后一个 LI
-            // 如果文档结构跳跃 (例如 H1 直接接 H3)，则向上寻找最近存在的层级
-            let parentLevel = currentLevel - 1;
-            while (parentLevel > 0 && !lastLiByLevel[parentLevel]) {
-                parentLevel--;
-            }
-            
-            // 2. 获取父节点 (可能是 tocRoot 或者某个 LI)
-            const parentNode = lastLiByLevel[parentLevel];
-            
-            // 3. 确定挂载点 (UL)
-            let parentUl;
-            if (parentLevel === 0) {
-                // 如果父级是 0，说明挂载到根目录
-                parentUl = tocRoot;
-            } else {
-                // 如果父级是某个 LI，检查它里面有没有 UL，没有则创建
-                parentUl = parentNode.querySelector('ul');
-                if (!parentUl) {
-                    parentUl = document.createElement('ul');
-                    parentNode.appendChild(parentUl);
-                    
-                    // --- 关键点：激活父级的折叠图标 ---
-                    // 因为现在给它添加了子元素，所以它的图标应该显示出来
-                    const parentToggle = parentNode.querySelector('.toc-toggle');
-                    if (parentToggle) {
-                        parentToggle.style.opacity = '1'; 
-                        // 默认展开 H2 下的 H3
-                        if (parentLevel <= 2) { 
-                            parentNode.classList.add('expanded'); 
-                        }
+                const textSpan = document.createElement('span');
+                textSpan.textContent = header.innerText;
+
+                link.appendChild(toggleIcon);
+                link.appendChild(textSpan);
+
+                // 点击文字跳转
+                textSpan.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    // --- 修改开始：自定义偏移跳转 ---
+                    const offset = 120; // 这里设置你想要保留的顶部距离（像素）
+                    const elementPosition = header.getBoundingClientRect().top + window.scrollY;
+                    const offsetPosition = elementPosition - offset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                    // 移动端点击后自动收起菜单
+                    if (window.innerWidth <= 768) {
+                        document.getElementById('sidebar').classList.remove('mobile-active');
                     }
+                });
+
+                // 点击图标折叠/展开 (现在绑定，但等变成父级时才有效)
+                toggleIcon.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation(); // 防止触发跳转
+                    li.classList.toggle('expanded');
+                });
+
+                li.appendChild(link);
+                return { li, toggleIcon };
+            }
+
+            // --- 核心修复逻辑：基于层级的父节点追踪 ---
+
+            // 记录每一个层级最后添加的 LI 节点
+            // Level 0 是虚拟根节点 (tocRoot)
+            const lastLiByLevel = {
+                0: tocRoot
+            };
+
+            headers.forEach(header => {
+                const currentLevel = parseInt(header.tagName.substring(1)); // 1, 2, 3
+                const { li, toggleIcon } = createTocItem(header, currentLevel);
+
+                // 1. 寻找当前标题的父级容器
+                // 正常情况下，H3 的父级应该是 Level 2 的最后一个 LI
+                // 如果文档结构跳跃 (例如 H1 直接接 H3)，则向上寻找最近存在的层级
+                let parentLevel = currentLevel - 1;
+                while (parentLevel > 0 && !lastLiByLevel[parentLevel]) {
+                    parentLevel--;
                 }
-            }
-            
-            // 4. 将当前 LI 添加到父级 UL 中
-            parentUl.appendChild(li);
 
-            // 5. 更新当前层级的“最后节点”记录
-            lastLiByLevel[currentLevel] = li;
+                // 2. 获取父节点 (可能是 tocRoot 或者某个 LI)
+                const parentNode = lastLiByLevel[parentLevel];
 
-            // 6. 清除比当前层级更深的记录
-            // (例如：添加了一个新的 H2 后，之前的 H3 记录就失效了，不能把新的 H4 挂到旧的 H3 下)
-            for (let i = currentLevel + 1; i <= 6; i++) {
-                lastLiByLevel[i] = null;
-            }
-        });
+                // 3. 确定挂载点 (UL)
+                let parentUl;
+                if (parentLevel === 0) {
+                    // 如果父级是 0，说明挂载到根目录
+                    parentUl = tocRoot;
+                } else {
+                    // 如果父级是某个 LI，检查它里面有没有 UL，没有则创建
+                    parentUl = parentNode.querySelector('ul');
+                    if (!parentUl) {
+                        parentUl = document.createElement('ul');
+                        parentNode.appendChild(parentUl);
 
-        // 默认展开第一级的所有项
-        const rootItems = tocRoot.children;
-        for(let item of rootItems) {
-            if(item.querySelector('ul')) {
-                item.classList.add('expanded');
-            }
-        }
-
-
-        // --- 2. 图片灯箱 (Lightbox) 逻辑 (保持不变) ---
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const allImages = document.querySelectorAll('.main-content img');
-
-        allImages.forEach(img => {
-            img.addEventListener('click', function() {
-                lightboxImg.src = this.src;
-                lightbox.classList.add('active');
-            });
-        });
-
-        lightbox.addEventListener('click', function() {
-            lightbox.classList.remove('active');
-        });
-
-        // --- 3. 移动端菜单切换 (保持不变) ---
-        window.toggleMobileSidebar = function() {
-            document.getElementById('sidebar').classList.toggle('mobile-active');
-        };
-        
-        contentArea.addEventListener('click', () => {
-             document.getElementById('sidebar').classList.remove('mobile-active');
-        });
-
-        // --- 4. 图片本地缓存系统 (新增部分) ---
-        const CACHE_NAME = 'p3r-guide-img-cache-v1';
-
-        // 检查浏览器是否支持 Cache API
-        if ('caches' in window) {
-            const allImages = document.querySelectorAll('.main-content img'); // 只缓存正文图片
-            
-            caches.open(CACHE_NAME).then(async (cache) => {
-                for (let img of allImages) {
-                    const originalSrc = img.getAttribute('src');
-                    
-                    // 跳过没有 src 或已经是 blob (已处理) 的图片
-                    if (!originalSrc || originalSrc.startsWith('blob:')) continue;
-
-                    try {
-                        // 1. 先尝试从缓存里找
-                        const cachedResponse = await cache.match(originalSrc);
-
-                        if (cachedResponse) {
-                            // A. 命中缓存：直接读取 Blob 并生成本地 URL
-                            const blob = await cachedResponse.blob();
-                            const blobUrl = URL.createObjectURL(blob);
-                            img.src = blobUrl;
-                            // console.log('已从本地缓存加载:', originalSrc);
-                        } else {
-                            // B. 未命中缓存：发起网络请求并存入缓存
-                            // 注意：这里使用 fetch 获取图片数据
-                            const networkResponse = await fetch(originalSrc, { 
-                                mode: 'cors', // 关键：跨域请求需要服务器支持
-                                cache: 'no-cache' // 强制网络请求，不读浏览器HTTP缓存
-                            });
-
-                            if (networkResponse.ok) {
-                                // 复制一份响应存入缓存 (response 流只能读一次)
-                                cache.put(originalSrc, networkResponse.clone());
-                                
-                                // 同时更新当前页面显示
-                                const blob = await networkResponse.blob();
-                                const blobUrl = URL.createObjectURL(blob);
-                                img.src = blobUrl;
-                                // console.log('下载并缓存成功:', originalSrc);
+                        // --- 关键点：激活父级的折叠图标 ---
+                        // 因为现在给它添加了子元素，所以它的图标应该显示出来
+                        const parentToggle = parentNode.querySelector('.toc-toggle');
+                        if (parentToggle) {
+                            parentToggle.style.opacity = '1';
+                            // 默认展开 H2 下的 H3
+                            if (parentLevel <= 2) {
+                                parentNode.classList.add('expanded');
                             }
                         }
-                    } catch (err) {
-                        // 如果跨域报错或网络失败，保持原 src 不变，让浏览器默认加载
-                        console.warn('缓存失败 (可能是跨域问题)，将使用普通加载:', originalSrc, err);
                     }
                 }
+
+                // 4. 将当前 LI 添加到父级 UL 中
+                parentUl.appendChild(li);
+
+                // 5. 更新当前层级的“最后节点”记录
+                lastLiByLevel[currentLevel] = li;
+
+                // 6. 清除比当前层级更深的记录
+                // (例如：添加了一个新的 H2 后，之前的 H3 记录就失效了，不能把新的 H4 挂到旧的 H3 下)
+                for (let i = currentLevel + 1; i <= 6; i++) {
+                    lastLiByLevel[i] = null;
+                }
             });
-        }
-    });
-</script>
+
+            // 默认展开第一级的所有项
+            const rootItems = tocRoot.children;
+            for (let item of rootItems) {
+                if (item.querySelector('ul')) {
+                    item.classList.add('expanded');
+                }
+            }
+
+
+            // --- 2. 图片灯箱 (Lightbox) 逻辑 (保持不变) ---
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const allImages = document.querySelectorAll('.main-content img');
+
+            allImages.forEach(img => {
+                img.addEventListener('click', function () {
+                    lightboxImg.src = this.src;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            lightbox.addEventListener('click', function () {
+                lightbox.classList.remove('active');
+            });
+
+            // --- 3. 移动端菜单切换 (保持不变) ---
+            window.toggleMobileSidebar = function () {
+                document.getElementById('sidebar').classList.toggle('mobile-active');
+            };
+
+            contentArea.addEventListener('click', () => {
+                document.getElementById('sidebar').classList.remove('mobile-active');
+            });
+
+            // --- 4. 图片本地缓存系统 (新增部分) ---
+            const CACHE_NAME = 'p3r-guide-img-cache-v1';
+
+            // 检查浏览器是否支持 Cache API
+            if ('caches' in window) {
+                const allImages = document.querySelectorAll('.main-content img'); // 只缓存正文图片
+
+                caches.open(CACHE_NAME).then(async (cache) => {
+                    for (let img of allImages) {
+                        const originalSrc = img.getAttribute('src');
+
+                        // 跳过没有 src 或已经是 blob (已处理) 的图片
+                        if (!originalSrc || originalSrc.startsWith('blob:')) continue;
+
+                        try {
+                            // 1. 先尝试从缓存里找
+                            const cachedResponse = await cache.match(originalSrc);
+
+                            if (cachedResponse) {
+                                // A. 命中缓存：直接读取 Blob 并生成本地 URL
+                                const blob = await cachedResponse.blob();
+                                const blobUrl = URL.createObjectURL(blob);
+                                img.src = blobUrl;
+                                // console.log('已从本地缓存加载:', originalSrc);
+                            } else {
+                                // B. 未命中缓存：发起网络请求并存入缓存
+                                // 注意：这里使用 fetch 获取图片数据
+                                const networkResponse = await fetch(originalSrc, {
+                                    mode: 'cors', // 关键：跨域请求需要服务器支持
+                                    cache: 'no-cache' // 强制网络请求，不读浏览器HTTP缓存
+                                });
+
+                                if (networkResponse.ok) {
+                                    // 复制一份响应存入缓存 (response 流只能读一次)
+                                    cache.put(originalSrc, networkResponse.clone());
+
+                                    // 同时更新当前页面显示
+                                    const blob = await networkResponse.blob();
+                                    const blobUrl = URL.createObjectURL(blob);
+                                    img.src = blobUrl;
+                                    // console.log('下载并缓存成功:', originalSrc);
+                                }
+                            }
+                        } catch (err) {
+                            // 如果跨域报错或网络失败，保持原 src 不变，让浏览器默认加载
+                            console.warn('缓存失败 (可能是跨域问题)，将使用普通加载:', originalSrc, err);
+                        }
+                    }
+                });
+            }
+
+            // --- 5. 通用内部链接平滑滚动 (新增部分) ---
+            // 这会让文章内的 <a href="#abc"> 和右下角返回顶部按钮都带平滑动画和偏移
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    // 如果是目录里的链接，已经在上面处理过了，这里跳过
+                    if (this.classList.contains('toc-link')) return;
+
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        const offset = 120; // 保持和目录一样的顶部距离
+                        const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY;
+                        const offsetPosition = elementPosition - offset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
+
 </html>
